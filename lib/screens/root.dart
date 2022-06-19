@@ -85,7 +85,7 @@ class _RootState extends State<Root> {
         toolbarHeight: 60,
       ),
 
-      backgroundColor: grey,
+      backgroundColor: white,
 
       drawer: size.width < 850 ? CustomDrawer(
         destinations: destinations, index: index, function: (index) => setState(() => this.index = index)) : null,

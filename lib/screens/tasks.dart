@@ -15,6 +15,9 @@ class _TasksState extends State<Tasks> {
   // Inicialización
   late List<Task> taskList;
   String query = '';
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
 
   @override
   void initState() {
@@ -26,7 +29,123 @@ class _TasksState extends State<Tasks> {
   @override
   Widget build(BuildContext context) {
 
+    addItemDialog(BuildContext context) => showDialog(
+      context: context, 
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          height: 400,
+          width: 350,
+          decoration: BoxDecoration(
+            color: black,
+            borderRadius: const BorderRadius.all(Radius.circular(15))
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Add Item', style: TextStyle(color: ochre, fontSize: 18)),
+                  CloseButton(
+                    color: grey,
+                    onPressed: () => Navigator.pop(context),
+                  )
+                ],
+              ),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextFormField(
+                        controller: titleController,
+                        style: TextStyle(color: white),
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                          hintStyle: TextStyle(color: grey),
+                          hintText: 'Add task title',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: paleOchre.withOpacity(0.5),
+                              width: 2
+                            ),
+                            borderRadius: const BorderRadius.all(Radius.circular(20))
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: ochre,
+                              width: 2
+                            ),
+                            borderRadius: const BorderRadius.all(Radius.circular(20))
+                          )
+                        ),
+                      ),
+
+                      const SizedBox(height: 30),
+
+                      TextFormField(
+                        controller: descriptionController,
+                        style: TextStyle(color: white),
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                          hintStyle: TextStyle(color: grey),
+                          hintText: 'Add task description',
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: paleOchre.withOpacity(0.5),
+                              width: 2
+                            ),
+                            borderRadius: const BorderRadius.all(Radius.circular(20))
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: ochre,
+                              width: 2
+                            ),
+                            borderRadius: const BorderRadius.all(Radius.circular(20))
+                          )
+                        ),
+                      ),
+                    ],
+                  )
+                ),
+              ),
+
+              CustomButton(
+                function: () {
+                  taskList.add(
+                    Task(
+                      name: titleController.text.toString(), 
+                      description: descriptionController.text.toString()
+                    )
+                  );
+                  setState(() {});
+                  titleController.clear();
+                  descriptionController.clear();
+                  Navigator.pop(context);
+                }, 
+                text: 'Add New Task', 
+                height: 50, 
+                width: 150, 
+                iconActive: true,
+                icon: Icon(Icons.add_rounded, color: white,), 
+                backgroundColor: ochre, 
+                style: TextStyle(color: white)
+              )
+            ],
+          ),
+        ),
+      )
+    );
+
+
     Size size = MediaQuery.of(context).size;
+
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
@@ -45,7 +164,7 @@ class _TasksState extends State<Tasks> {
               children: [
                 // Buscador / filtro
                 Container(
-                  width: 200,
+                  width: size.width < 500 ? 150 : 200,
                   margin: const EdgeInsets.symmetric(vertical: 20),
                   decoration: BoxDecoration(
                     color: ochre,
@@ -74,7 +193,7 @@ class _TasksState extends State<Tasks> {
 
                 // Botón 'Agregar Tarea'
                 CustomButton(
-                  function: (){}, 
+                  function: () => addItemDialog(context), 
                   text: 'Add New Task',
                   style: TextStyle(color: black), 
                   height: 50, 
@@ -85,13 +204,13 @@ class _TasksState extends State<Tasks> {
                 )
               ],
             ),
- 
+
             // Tabla
             Container(
               margin: const EdgeInsets.symmetric(vertical: 20),
               width: size.width,
-              height: size.height * 0.5,
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              height: 400,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               decoration: BoxDecoration(
                 color: black,
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -117,7 +236,124 @@ class _TasksState extends State<Tasks> {
   }
 
   // Constructor de Lista
-  Widget listBuilder() => ListView.separated(
+  Widget listBuilder() {
+    updateTaskDialog(BuildContext context, Task item) { 
+      TextEditingController updateTitleController = TextEditingController(text: item.name);
+      TextEditingController updateDescriptionController = TextEditingController(text: item.description);
+
+      showDialog(
+        context: context, 
+        builder: (context) => Dialog(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            height: 400,
+            width: 350,
+            decoration: BoxDecoration(
+              color: black,
+              borderRadius: const BorderRadius.all(Radius.circular(15))
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Update Item', style: TextStyle(color: ochre, fontSize: 18)),
+                    CloseButton(
+                      color: grey,
+                      onPressed: () => Navigator.pop(context),
+                    )
+                  ],
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextFormField(
+                          controller: updateTitleController,
+                          style: TextStyle(color: white),
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                            hintStyle: TextStyle(color: grey),
+                            hintText: 'Add task title',
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: paleOchre.withOpacity(0.5),
+                                width: 2
+                              ),
+                              borderRadius: const BorderRadius.all(Radius.circular(20))
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: ochre,
+                                width: 2
+                              ),
+                              borderRadius: const BorderRadius.all(Radius.circular(20))
+                            )
+                          ),
+                        ),
+
+                        const SizedBox(height: 30),
+
+                        TextFormField(
+                          controller: updateDescriptionController,
+                          style: TextStyle(color: white),
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                            hintStyle: TextStyle(color: grey),
+                            hintText: 'Add task description',
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: paleOchre.withOpacity(0.5),
+                                width: 2
+                              ),
+                              borderRadius: const BorderRadius.all(Radius.circular(20))
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: ochre,
+                                width: 2
+                              ),
+                              borderRadius: const BorderRadius.all(Radius.circular(20))
+                            )
+                          ),
+                        ),
+                      ],
+                    )
+                  ),
+                ),
+
+                CustomButton(
+                  function: () {
+                    setState(() {
+                      item.name = updateTitleController.text.toString();
+                      item.description = updateDescriptionController.text.toString();
+                    });
+                    updateTitleController.clear();
+                    updateDescriptionController.clear();
+                    Navigator.pop(context);
+                  }, 
+                  text: 'Update Task', 
+                  height: 50, 
+                  width: 150, 
+                  iconActive: true,
+                  icon: Icon(Icons.update_rounded, color: white,), 
+                  backgroundColor: ochre, 
+                  style: TextStyle(color: white)
+                )
+              ],
+            ),
+          ),
+        )
+      );
+    }
+    
+    return ListView.separated(  
       itemBuilder: (context, index) {
         var leadingNum = index + 1;
         var item = taskList[index];
@@ -150,7 +386,7 @@ class _TasksState extends State<Tasks> {
               MouseRegion(
                 cursor: SystemMouseCursors.click,
                 child: GestureDetector(
-                  onTap: (){},
+                  onTap: () => updateTaskDialog(context, item),
                   child: Icon(Icons.edit_rounded, color: white)
                 ),
               ),
@@ -160,7 +396,8 @@ class _TasksState extends State<Tasks> {
       }, 
       separatorBuilder: (context, index) => const Divider(), 
       itemCount: taskList.length
-  );
+    );
+  }
 
 
   // Función buscar tarea
@@ -169,7 +406,7 @@ class _TasksState extends State<Tasks> {
       final lowerName = service.name.toLowerCase();
       final searchLower = query.toLowerCase();
 
-      return lowerName.contains(searchLower);
+      return lowerName.contains(searchLower); 
     }).toList();
 
     setState(() {
