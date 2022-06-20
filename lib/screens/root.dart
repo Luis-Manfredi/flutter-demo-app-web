@@ -41,7 +41,9 @@ class _RootState extends State<Root> {
 
         actions: [
 
-          Center(child: Text(username.isEmpty ? 'Welcome, user!' : 'Welcome, $username!', style: TextStyle(color: white, fontSize: 20))),
+          size.width < 500 
+          ? Center(child: Text(username.isEmpty ? 'User' : username, style: TextStyle(color: white, fontSize: 20))) 
+          : Center(child: Text(username.isEmpty ? 'Welcome, user!' : 'Welcome, $username!', style: TextStyle(color: white, fontSize: 20))),
 
           const SizedBox(width: 30),
 

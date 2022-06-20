@@ -152,10 +152,13 @@ class _TasksState extends State<Tasks> {
       alignment: Alignment.topLeft,
 
       child: SingleChildScrollView(
+        // physics: const NeverScrollableScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Tasks', style: TextStyle(color: white, fontSize: 36)),
+            const SizedBox(height: 5),
+            Text('Manage your daily tasks.', style: TextStyle(color: grey, fontSize: 18)),
       
             const SizedBox(height: 40),
 
@@ -164,7 +167,7 @@ class _TasksState extends State<Tasks> {
               children: [
                 // Buscador / filtro
                 Container(
-                  width: size.width < 500 ? 150 : 200,
+                  width: size.width < 500 ? 130 : 200,
                   margin: const EdgeInsets.symmetric(vertical: 20),
                   decoration: BoxDecoration(
                     color: ochre,

@@ -27,7 +27,7 @@ class _LoginState extends State<Login> {
         child: Container(
           padding: const EdgeInsets.all(25),
           height: 450,
-          width: 400,
+          width: size.width < 450 ? 300 : 400 ,
           decoration: BoxDecoration(
             color: grey.withOpacity(0.05),
             borderRadius: const BorderRadius.all(Radius.circular(15)),
