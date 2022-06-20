@@ -356,6 +356,69 @@ class _TasksState extends State<Tasks> {
       );
     }
     
+    warningPrompt(BuildContext context, Task item) => showDialog(
+      context: context, 
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          height: 250,
+          width: 400,
+          decoration: BoxDecoration(
+            color: black,
+            borderRadius: const BorderRadius.all(Radius.circular(15))
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Delete Item', style: TextStyle(color: ochre, fontSize: 18)),
+                  CloseButton(
+                    color: grey,
+                    onPressed: () => Navigator.pop(context),
+                  )
+                ],
+              ),
+
+              Text('Are you sure you want to delete this task?', style: TextStyle(color: white, fontSize: 18)),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomButton(
+                    function: () {
+                      setState(() { 
+                        taskList.remove(item); 
+                      });
+                      Navigator.pop(context);
+                    }, 
+                    text: 'Delete Task', 
+                    height: 50, 
+                    width: 150, 
+                    iconActive: false, 
+                    backgroundColor: ochre, 
+                    style: TextStyle(color: white)
+                  ),
+                  
+                  CustomButton(
+                    function: () => Navigator.pop(context), 
+                    text: 'Cancel', 
+                    height: 50, 
+                    width: 150, 
+                    iconActive: false, 
+                    backgroundColor: grey, 
+                    style: TextStyle(color: black)
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      )
+    );
+
     return ListView.separated(  
       itemBuilder: (context, index) {
         var leadingNum = index + 1;
@@ -376,9 +439,11 @@ class _TasksState extends State<Tasks> {
                 cursor: SystemMouseCursors.click,
                 child: GestureDetector(
                   onTap: (){
-                    setState(() {
-                      taskList.remove(item);
-                    });
+                    // setState(() {
+                    //   taskList.remove(item);
+                    // });
+
+                    warningPrompt(context, item);
                   },
                   child: Icon(Icons.delete_forever_rounded, color: ochre)
                 ),
