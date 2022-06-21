@@ -25,7 +25,7 @@ class _LoginState extends State<Login> {
 
       body: Center(
         child: Container(
-          padding: const EdgeInsets.all(25),
+          padding: size.width < 450 ? const EdgeInsets.symmetric(horizontal: 10, vertical: 20) : const EdgeInsets.all(25),
           height: 450,
           width: size.width < 450 ? 300 : 400 ,
           decoration: BoxDecoration(

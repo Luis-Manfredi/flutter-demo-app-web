@@ -143,96 +143,155 @@ class _TasksState extends State<Tasks> {
       )
     );
 
-
     Size size = MediaQuery.of(context).size;
 
-
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
       alignment: Alignment.topLeft,
-
       child: SingleChildScrollView(
         // physics: const NeverScrollableScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Tasks', style: TextStyle(color: white, fontSize: 36)),
-            const SizedBox(height: 5),
-            Text('Manage your daily tasks.', style: TextStyle(color: grey, fontSize: 18)),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Tasks', style: TextStyle(color: white, fontSize: 36)),
+              const SizedBox(height: 5),
+              Text('Manage your daily tasks.', style: TextStyle(color: grey, fontSize: 18)),
       
-            const SizedBox(height: 40),
+              const SizedBox(height: 40),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Buscador / filtro
-                Container(
-                  width: size.width < 500 ? 130 : 200,
-                  margin: const EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(
-                    color: ochre,
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        spreadRadius: 2,
-                        blurRadius: 2,
-                        offset: const Offset(0, 2)
-                      )
-                    ]
-                  ),
-                  child: TextField(
-                    cursorColor: black,
-                    style: TextStyle(color: black),
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-                      hintText: 'Search',
-                      hintStyle: TextStyle(color: white),
-                      border: InputBorder.none
-                    ),
-                    onChanged: searchTask,
-                  ),
-                ),
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  if (size.width < 500) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Buscador / filtro
+                        Container(
+                          width: size.width,
+                          margin: const EdgeInsets.symmetric(vertical: 20),
+                          decoration: BoxDecoration(
+                            color: ochre,
+                            borderRadius: const BorderRadius.all(Radius.circular(20)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                spreadRadius: 2,
+                                blurRadius: 2,
+                                offset: const Offset(0, 2)
+                              )
+                            ]
+                          ),
+                          child: TextField(
+                            cursorColor: black,
+                            style: TextStyle(color: black),
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.all(20),
+                              hintText: 'Search task name',
+                              hintStyle: TextStyle(color: white),
+                              border: InputBorder.none,
+                              suffixIcon: Container(
+                                margin: const EdgeInsets.only(right: 5),
+                                child: Icon(Icons.search, color: black))
+                            ),
+                            onChanged: searchTask,
+                          ),
+                        ),
 
-                // Botón 'Agregar Tarea'
-                CustomButton(
-                  function: () => addItemDialog(context), 
-                  text: 'Add New Task',
-                  style: TextStyle(color: black), 
-                  height: 50, 
-                  width: 150,
-                  backgroundColor: grey,
-                  iconActive: true,
-                  icon: Icon(Icons.add, color: black),
-                )
-              ],
-            ),
+                        // Botón 'Agregar Tarea'
+                        CustomButton(
+                          function: () => addItemDialog(context), 
+                          text: 'Add New Task',
+                          style: TextStyle(color: black), 
+                          height: 50, 
+                          width: 150,
+                          backgroundColor: grey,
+                          iconActive: true,
+                          icon: Icon(Icons.add, color: black),
+                        )
+                      ],
+                    );
+                  }
+                  else {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Buscador / filtro
+                        Container(
+                          width: 250,
+                          margin: const EdgeInsets.symmetric(vertical: 20),
+                          decoration: BoxDecoration(
+                            color: ochre,
+                            borderRadius: const BorderRadius.all(Radius.circular(20)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                spreadRadius: 2,
+                                blurRadius: 2,
+                                offset: const Offset(0, 2)
+                              )
+                            ]
+                          ),
+                          child: TextField(
+                            cursorColor: black,
+                            style: TextStyle(color: black),
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.all(20),
+                              hintText: 'Search task name',
+                              hintStyle: TextStyle(color: white),
+                              border: InputBorder.none,
+                              suffixIcon: Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                child: Icon(Icons.search, color: black),
+                              )
+                            ),
+                            onChanged: searchTask,
+                          ),
+                        ),
 
-            // Tabla
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 20),
-              width: size.width,
-              height: 400,
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-              decoration: BoxDecoration(
-                color: black,
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    spreadRadius: 2,
-                    blurRadius: 2,
-                    offset: const Offset(0, 2)
-                  )
-                ]
+                        // Botón 'Agregar Tarea'
+                        CustomButton(
+                          function: () => addItemDialog(context), 
+                          text: 'Add New Task',
+                          style: TextStyle(color: black), 
+                          height: 50, 
+                          width: 150,
+                          backgroundColor: grey,
+                          iconActive: true,
+                          icon: Icon(Icons.add, color: black),
+                        )
+                      ],
+                    );
+                  }
+                }, 
               ),
 
-              child: taskList.isEmpty ? 
-              Center(child: Text('No tasks at the moment. Click the button above to add a new task', 
-              style: TextStyle(color: grey, fontSize: 20)))
-              : listBuilder(),
-            )
-          ],
+              // Tabla
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 20),
+                width: size.width,
+                height: 400,
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                decoration: BoxDecoration(
+                  color: black,
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: const Offset(0, 2)
+                    )
+                  ]
+                ),
+
+                child: taskList.isEmpty ? 
+                Center(child: Text('No tasks at the moment. Click the button above to add a new task', 
+                style: TextStyle(color: grey, fontSize: 20)))
+                : listBuilder(),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -419,7 +478,8 @@ class _TasksState extends State<Tasks> {
       )
     );
 
-    return ListView.separated(  
+    return ListView.separated(
+      padding: const EdgeInsets.symmetric(vertical: 10),  
       itemBuilder: (context, index) {
         var leadingNum = index + 1;
         var item = taskList[index];
@@ -438,13 +498,7 @@ class _TasksState extends State<Tasks> {
               MouseRegion(
                 cursor: SystemMouseCursors.click,
                 child: GestureDetector(
-                  onTap: (){
-                    // setState(() {
-                    //   taskList.remove(item);
-                    // });
-
-                    warningPrompt(context, item);
-                  },
+                  onTap: () => warningPrompt(context, item),
                   child: Icon(Icons.delete_forever_rounded, color: ochre)
                 ),
               ),
