@@ -150,7 +150,7 @@ class _TasksState extends State<Tasks> {
       child: SingleChildScrollView(
         // physics: const NeverScrollableScrollPhysics(),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
+          padding: const EdgeInsets.all(30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -158,7 +158,7 @@ class _TasksState extends State<Tasks> {
               const SizedBox(height: 5),
               Text('Manage your daily tasks.', style: TextStyle(color: grey, fontSize: 18)),
       
-              const SizedBox(height: 40),
+              const SizedBox(height: 20),
 
               LayoutBuilder(
                 builder: (context, constraints) {
@@ -455,7 +455,7 @@ class _TasksState extends State<Tasks> {
                     }, 
                     text: 'Delete Task', 
                     height: 50, 
-                    width: 150, 
+                    width: MediaQuery.of(context).size.width < 500 ? 110 : 150, 
                     iconActive: false, 
                     backgroundColor: ochre, 
                     style: TextStyle(color: white)
@@ -465,7 +465,7 @@ class _TasksState extends State<Tasks> {
                     function: () => Navigator.pop(context), 
                     text: 'Cancel', 
                     height: 50, 
-                    width: 150, 
+                    width: MediaQuery.of(context).size.width < 500 ? 110 : 150, 
                     iconActive: false, 
                     backgroundColor: grey, 
                     style: TextStyle(color: black)

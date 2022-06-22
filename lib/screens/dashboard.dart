@@ -1,7 +1,9 @@
 import 'package:demo_web_app/components/custom_card.dart';
+import 'package:demo_web_app/components/indicator.dart';
+import 'package:demo_web_app/components/monthly_chart.dart';
+import 'package:demo_web_app/components/pie_chart.dart';
 import 'package:demo_web_app/constants/colors.dart';
 import 'package:demo_web_app/data/dashboard_card_data.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatelessWidget {
@@ -68,18 +70,20 @@ class Dashboard extends StatelessWidget {
 
       child: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
+          padding: const EdgeInsets.all(30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Dashboard', style: TextStyle(color: white, fontSize: 36)),
               const SizedBox(height: 5),
               Text('Brief sight of your tasks and projects.', style: TextStyle(color: grey, fontSize: 18)),
-      
+
+              const SizedBox(height: 20),
+
               //Cards
               Container(
                 padding: const EdgeInsets.all(2),
-                margin: const EdgeInsets.symmetric(vertical: 40),
+                margin: const EdgeInsets.symmetric(vertical: 20),
                 child: Wrap(
                   spacing: 20,
                   runSpacing: 20,
@@ -91,10 +95,11 @@ class Dashboard extends StatelessWidget {
                 ),
               ),
 
+              const SizedBox(height: 20),
+
               Container(
                 width: size.width,
                 padding: const EdgeInsets.all(2),
-                margin: const EdgeInsets.symmetric(vertical: 40),
                 child: Wrap(
                   spacing: 20,
                   runSpacing: 20,
@@ -107,58 +112,74 @@ class Dashboard extends StatelessWidget {
                           Text('Monthly Productivity', style: TextStyle(color: white, fontSize: 20, fontWeight: FontWeight.w500)),
                           const SizedBox(height: 10),
 
-                          SizedBox(
-                            height: 220,
-                            width: 600,
-                            child: LineChart(
-                              LineChartData(
-                                borderData: FlBorderData(
-                                  show: false,
-                                ),
-                                minX: 1,
-                                maxX: 12,
-                                minY: 1,
-                                maxY: 10,
-                                titlesData: FlTitlesData(
-                                  show: true,
-                                  topTitles: AxisTitles(
-                                    drawBehindEverything: false
-                                  ),
-                                  rightTitles: AxisTitles(
-                                    drawBehindEverything: false
-                                  )
-                                ),
-                                lineBarsData: [
-                                  LineChartBarData(
-                                    color: white,
-                                    belowBarData: BarAreaData(
-                                      show: true,
-                                      color: grey.withOpacity(0.5)
-                                    ),
-                                    isCurved: true,
-                                    spots: const [
-                                      FlSpot(1, 3),
-                                      FlSpot(2, 5),
-                                      FlSpot(3, 4),
-                                      FlSpot(4, 7),
-                                      FlSpot(5, 6),
-                                      FlSpot(6, 3),
-                                      FlSpot(7, 5),
-                                      FlSpot(8, 4),
-                                      FlSpot(9, 5),
-                                      FlSpot(10, 6),
-                                      FlSpot(11, 5),
-                                      FlSpot(12, 3),
-                                    ]
-                                  )
-                                ]
-                              )
-                            ),
-                          )
+                          const MonthlyChart(), 
                         ],
                       ),
                     ),
-                    CustomCard(height: 240, width: size.width < 850 ? size.width : 300)
+
+                    CustomCard(
+                      height: size.width < 500 ? 360 : 300, 
+                      width: size.width < 850 ? size.width : 400,
+                      widget: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Time Management', style: TextStyle(color: white, fontSize: 20, fontWeight: FontWeight.w500)),
+                            const SizedBox(height: 10),
+
+                            LayoutBuilder(builder: (context, constraints) {
+                             if (size.width < 500) {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const CustomPieChart(),
+
+                                  const SizedBox(height: 10),
+                                
+                                  Column(
+                                    children: [
+                                      Indicator(color: done, text: 'Project #1'),
+                              
+                                      const SizedBox(height: 10),
+                              
+                                      Indicator(color: inProgress, text: 'Project #2'),
+                              
+                                      const SizedBox(height: 10),
+                              
+                                      Indicator(color: pending, text: 'Project #3')
+                                    ],
+                                  )
+                                ],
+                              );
+                             } 
+                             else {
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const CustomPieChart(),
+                                
+                                    Column(
+                                      children: [
+                                        Indicator(color: done, text: 'Project #1'),
+                                
+                                        const SizedBox(height: 10),
+                                
+                                        Indicator(color: inProgress, text: 'Project #2'),
+                                
+                                        const SizedBox(height: 10),
+                                
+                                        Indicator(color: pending, text: 'Project #3')
+                                      ],
+                                    )
+                                  ],
+                                );
+                             }
+                            })
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
               )
